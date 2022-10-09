@@ -12,7 +12,7 @@ import React, {type PropsWithChildren} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Button} from 'react-native';
-
+import ANote from './frontend/screens/note-details/anote';
 import Home from './frontend/screens/home';
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +40,12 @@ const App = () => {
               />
             ),
           }}
+        />
+        <Stack.Screen
+          name="Note"
+          component={ANote}
+          // eslint-disable-next-line dot-notation
+          options={({route}) => ({title: route.params['title']})}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -10,11 +10,32 @@ export const newNote = async (req: Request, res: Response) => {
 
   try {
     const result = await Note.create(req.body);
-    res.status(200).send({
+    return res.status(200).send({
       data: result,
     });
   } catch (err) {
     console.log(err);
     res.status(500).send('Error creating note');
+  }
+};
+
+export const getAnote = async (req: Request, res: Response) => {
+  const getParam = req.params;
+  const id = getParam.id.split(':');
+
+  try {
+    const note = await Note.findOne({
+      where: {
+        id: id[1],
+      },
+    });
+    console.log(note);
+    return res.status(200).send({
+      message: 'ok',
+      data: note,
+    });
+  } catch (err) {
+    res.status(500);
+    console.log(err);
   }
 };

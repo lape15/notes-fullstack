@@ -52,5 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 30,
     justifyContent: 'center',
+    zIndex: 5,
   },
 });

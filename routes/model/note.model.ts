@@ -15,11 +15,15 @@ Note.init(
     },
     title: {
       type: DataTypes.STRING,
-      defaultValue: 'Untitled one',
+      defaultValue: 'Untitled',
     },
     note: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    category: {
+      type: DataTypes.STRING,
+      defaultValue: 'Default',
     },
   },
 
