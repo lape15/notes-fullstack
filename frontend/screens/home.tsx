@@ -55,15 +55,18 @@ const Home = () => {
           />
           <Notes notes={notes} />
         </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => setAddNotes(true)}
-            style={styles.touchable}>
-            <Image source={require('../../assets/icons/plus.png')} />
-          </TouchableOpacity>
-        </View>
+
+        <TouchableOpacity
+          onPress={() => setAddNotes(true)}
+          style={styles.touchable}>
+          <Image source={require('../../assets/icons/plus.png')} />
+        </TouchableOpacity>
       </ScrollView>
-      <AddNoteModal visible={addNotes} onHide={() => setAddNotes(false)} />
+      <AddNoteModal
+        visible={addNotes}
+        onHide={() => setAddNotes(false)}
+        getNotes={getNotes}
+      />
     </SafeAreaView>
   );
 };
@@ -88,10 +91,17 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   touchable: {
-    backgroundColor: '#BD8E00',
+    backgroundColor: '#fff',
     position: 'absolute',
-    bottom: 0,
+    bottom: 20,
     right: 10,
+    zIndex: 2,
+    height: 50,
+    width: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
   },
 });
 export default Home;

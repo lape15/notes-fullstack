@@ -16,12 +16,13 @@ import {URL_API} from '../../../enpoint';
 
 type FormProps = {
   visible: boolean;
+  getNotes: () => void;
 };
 const noteValues = {title: '', note: '', category: ''};
 export const Form = (props: FormProps) => {
   const slideAnime = useRef(new Animated.Value(-50)).current;
   const slideLeft = useRef(new Animated.Value(-2000)).current;
-  const {visible} = props;
+  const {visible, getNotes} = props;
   useEffect(() => {
     if (visible) {
       slideIntoView();
@@ -72,6 +73,7 @@ export const Form = (props: FormProps) => {
             });
             console.log(data, 'EEEE');
             resetForm();
+            getNotes();
           } catch (err) {
             console.log(err);
           }

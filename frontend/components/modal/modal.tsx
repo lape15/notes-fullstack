@@ -6,9 +6,10 @@ import {Form} from '../form/form';
 type ModalProp = {
   visible: boolean;
   onHide: () => void;
+  getNotes: () => void;
 };
 export const AddNoteModal = (props: ModalProp) => {
-  const {visible, onHide} = props;
+  const {visible, onHide, getNotes} = props;
   return (
     <Modal
       visible={visible}
@@ -20,7 +21,13 @@ export const AddNoteModal = (props: ModalProp) => {
           <Image source={require('../../../assets/icons/close.png')} />
         </TouchableOpacity>
         <View>
-          <Form visible={visible} />
+          <Form
+            visible={visible}
+            getNotes={() => {
+              onHide();
+              getNotes();
+            }}
+          />
         </View>
       </View>
     </Modal>
@@ -44,5 +51,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     width: 30,
+    justifyContent: 'center',
   },
 });

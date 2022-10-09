@@ -16,6 +16,7 @@ const Notes = ({notes}: NotesProp) => {
         columnWrapperStyle={styles.listWrapper}
         numColumns={2}
         horizontal={false}
+        initialNumToRender={4}
       />
     </View>
   );
@@ -25,8 +26,9 @@ export default Notes;
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    // flex: 1,
     marginVertical: 30,
+    backgroundColor: 'white',
   },
   listWrapper: {
     flex: 1,
