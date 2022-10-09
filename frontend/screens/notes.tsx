@@ -1,25 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
-import {FlatList, View, Text, StyleSheet} from 'react-native';
-import {URL_API} from '../../enpoint';
+import {FlatList, View, StyleSheet} from 'react-native';
 import {Item} from '../components/note/note';
 
-const Notes = () => {
-  const [notes, setNotes] = useState<any[]>([]);
-  const getNotes = async () => {
-    try {
-      const response = await fetch(`${URL_API}notes`);
-      const json = await response.json();
-      setNotes(json.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getNotes();
-  }, []);
-
+type NotesProp = {
+  notes: Array<any>;
+};
+const Notes = ({notes}: NotesProp) => {
   return (
     <View style={styles.wrapper}>
       <FlatList
