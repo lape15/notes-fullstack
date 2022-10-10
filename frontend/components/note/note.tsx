@@ -24,7 +24,7 @@ const mnts = {
   12: 'Dec',
 };
 
-type ItemProp = {
+export type ItemProp = {
   note: {
     title: string;
     note: string;
@@ -32,7 +32,7 @@ type ItemProp = {
     category: string;
     id: number;
   };
-  route: ParamListBase;
+
   //   navigation:any
 };
 
@@ -87,6 +87,7 @@ const style = StyleSheet.create({
   view: {
     position: 'absolute',
     right: 3,
+    zIndex: 4,
   },
   title: {
     color: 'white',

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {InputField} from '../components/input/input';
 import {URL_API} from '../../enpoint';
 import {AddNoteModal} from '../components/modal/modal';
@@ -19,12 +19,14 @@ const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState<any[]>([]);
+  const [defaultTemp, setdefaultTemp] = useState<any[]>([]);
 
   const getNotes = async () => {
     try {
       const response = await fetch(`${URL_API}notes`);
       const json = await response.json();
       setNotes(json.data);
+      setdefaultTemp(json.data);
     } catch (err) {
       console.log(err);
     }
@@ -33,6 +35,21 @@ const Home = () => {
   useEffect(() => {
     getNotes();
   }, []);
+
+  const handleNotesSearch = (text: string) => {
+    if (text) {
+      const search = defaultTemp.filter(
+        nt =>
+          nt.title
+            .replace(/\s+/g, '')
+            .toLowerCase()
+            .indexOf(text.replace(/\s+/g, '').toLocaleLowerCase()) !== -1,
+      );
+      setNotes(search);
+    } else {
+      setNotes(defaultTemp);
+    }
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -51,7 +68,7 @@ const Home = () => {
           <InputField
             placeholder="Search note....."
             val=""
-            onChangeText={() => console.log('happier than ever')}
+            onChangeText={handleNotesSearch}
           />
           <Notes notes={notes} />
         </View>

@@ -29,11 +29,13 @@ export const getAnote = async (req: Request, res: Response) => {
         id: id[1],
       },
     });
-    console.log(note);
-    return res.status(200).send({
-      message: 'ok',
-      data: note,
-    });
+
+    if (note) {
+      return res.status(200).send({
+        message: 'ok',
+        data: note,
+      });
+    }
   } catch (err) {
     res.status(500);
     console.log(err);

@@ -1,14 +1,31 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {URL_API} from '../../../enpoint';
-import {View, Text, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Animated,
+  Image,
+  Pressable,
+} from 'react-native';
 
+type Note = {
+  title: string;
+  note: string;
+  createdAt: string;
+  category: string;
+  id: number;
+};
 const ANote = ({route}) => {
-  console.log(route);
-
+  const [note, setNote] = useState<null | Note>(null);
+  const tiny = useRef(new Animated.Value(0.8)).current;
   const getNote = async () => {
     try {
       const response = await fetch(`${URL_API}notes/:${route.params.id}`);
       const json = await response.json();
+      setNote(json.data);
     } catch (err) {
       console.log(err);
     }
@@ -18,11 +35,90 @@ const ANote = ({route}) => {
     getNote();
   }, []);
 
+  const scaleUp = () => {
+    Animated.timing(tiny, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const scaleDown = () => {
+    console.log('I tried toscream');
+    Animated.timing(tiny, {
+      toValue: 0.8,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
   return (
-    <View>
-      <Text>A single Note here</Text>
-    </View>
+    <SafeAreaView style={styles.area}>
+      {/* <View style={styles.col}>
+        <Text style={styles.sub}>Title</Text>
+        <Text style={styles.text}>{note?.title}</Text>
+      </View> */}
+      <View style={styles.col}>
+        <Text style={styles.sub}>Category</Text>
+        <Text style={styles.text}>{note?.category || 'category'}</Text>
+      </View>
+      <View style={styles.col}>
+        <Text style={styles.text}>{note?.note}</Text>
+      </View>
+      <Animated.View style={{...styles.wrap, transform: [{scale: tiny}]}}>
+        <Pressable
+          style={styles.btn}
+          onPress={scaleUp}
+          //   onPressOut={scaleDown}
+        >
+          <Text style={styles.btnText}>Add note</Text>
+          <Image source={require('../../../assets/icons/edit.png')} />
+        </Pressable>
+      </Animated.View>
+    </SafeAreaView>
   );
 };
 
 export default ANote;
+const styles = StyleSheet.create({
+  area: {
+    backgroundColor: 'white',
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    paddingVertical: 100,
+  },
+  text: {
+    color: 'grey',
+    marginTop: 3,
+  },
+  sub: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  col: {
+    marginVertical: 10,
+    padding: 10,
+  },
+  wrap: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    marginTop: 25,
+    padding: 10,
+  },
+  btn: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#BD8E00',
+    width: 100,
+    gap: 5,
+
+    height: 45,
+    borderRadius: 12,
+    paddingHorizontal: 5,
+  },
+  btnText: {
+    color: 'white',
+    fontSize: 12,
+  },
+});

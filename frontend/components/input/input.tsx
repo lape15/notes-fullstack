@@ -11,7 +11,7 @@ import {
 type InputProp = {
   keyboardType?: KeyboardTypeOptions;
   val: string;
-  onChangeText: () => void;
+  onChangeText: (val: string) => void;
   placeholder?: string;
 };
 export const InputField = (props: InputProp) => {
@@ -52,6 +52,7 @@ export const InputField = (props: InputProp) => {
 
   const handleChange = (e: string) => {
     setValue(e);
+    onChangeText(e);
   };
   return (
     <Animated.View
