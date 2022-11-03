@@ -70,7 +70,7 @@ const ANote = ({route}) => {
           onPress={scaleUp}
           //   onPressOut={scaleDown}
         >
-          <Text style={styles.btnText}>Add note</Text>
+          <Text style={styles.btnText}>Edit note</Text>
           <Image source={require('../../../assets/icons/edit.png')} />
         </Pressable>
       </Animated.View>

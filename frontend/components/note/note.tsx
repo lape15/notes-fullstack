@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 // import {format, compareAsc} from 'date-fns';
 import {getMonth, getDate} from 'date-fns';
 
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {
-  ParamListBase,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const mnts = {
   1: 'Jan',
@@ -32,14 +35,33 @@ export type ItemProp = {
     category: string;
     id: number;
   };
-
+  index: number;
   //   navigation:any
 };
 
 export const Item = (props: ItemProp) => {
   const navigation = useNavigation();
+  const slideAnime = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    slideIntoView();
+  }, []);
+
+  const slideIntoView = () => {
+    Animated.timing(slideAnime, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+      delay: (props.index / 2) * 1000,
+    }).start();
+  };
   return (
-    <View style={style.item}>
+    <Animated.View
+      style={{
+        ...style.item,
+        opacity: slideAnime,
+        transform: [{scale: slideAnime}],
+      }}>
       <View style={style.head}>
         <Text style={style.cat}>{props.note.category || 'category'}</Text>
         <TouchableOpacity
@@ -62,7 +84,7 @@ export const Item = (props: ItemProp) => {
         <Text style={style.title}>{props.note.title}</Text>
         <Text style={style.noteText}>{props.note.note}</Text>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 const style = StyleSheet.create({

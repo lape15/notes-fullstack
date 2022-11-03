@@ -41,3 +41,9 @@ export const getAnote = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
+
+export const editNote = async (req: Request, res: Response) => {
+  const note = req.body;
+  console.log({note, req});
+  return res.status(200).send('hufn');
+};

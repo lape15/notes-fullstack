@@ -11,7 +11,7 @@ const Notes = ({notes}: NotesProp) => {
     <View style={styles.wrapper}>
       <FlatList
         data={notes}
-        renderItem={({item}) => <Item note={item} />}
+        renderItem={({item, index}) => <Item note={item} index={index} />}
         keyExtractor={item => item.id}
         columnWrapperStyle={styles.listWrapper}
         numColumns={2}
