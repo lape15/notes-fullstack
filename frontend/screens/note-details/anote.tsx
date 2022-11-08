@@ -9,7 +9,9 @@ import {
   Animated,
   Image,
   Pressable,
+  Modal,
 } from 'react-native';
+import {EditForm} from '../../components/form/edit_note';
 
 type Note = {
   title: string;
@@ -21,6 +23,8 @@ type Note = {
 const ANote = ({route}) => {
   const [note, setNote] = useState<null | Note>(null);
   const tiny = useRef(new Animated.Value(0.8)).current;
+  const [showEdit, setShowEdit] = useState(false);
+
   const getNote = async () => {
     try {
       const response = await fetch(`${URL_API}notes/:${route.params.id}`);
@@ -65,15 +69,40 @@ const ANote = ({route}) => {
         <Text style={styles.text}>{note?.note}</Text>
       </View>
       <Animated.View style={{...styles.wrap, transform: [{scale: tiny}]}}>
-        <Pressable
+        <TouchableOpacity
           style={styles.btn}
-          onPress={scaleUp}
+          onPress={() => {
+            scaleUp();
+            setShowEdit(true);
+          }}
           //   onPressOut={scaleDown}
         >
           <Text style={styles.btnText}>Edit note</Text>
           <Image source={require('../../../assets/icons/edit.png')} />
-        </Pressable>
+        </TouchableOpacity>
       </Animated.View>
+      <Modal
+        visible={showEdit}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowEdit(false)}>
+        <View style={styles.centeredView}>
+          <EditForm
+            visible={showEdit}
+            note={{
+              title: note?.title ?? '',
+              category: note?.category ?? '',
+              note: note?.note ?? '',
+              id: note?.id,
+            }}
+            getNote={() => {
+              getNote();
+              setShowEdit(false);
+            }}
+            close={() => setShowEdit(false)}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -86,6 +115,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     paddingVertical: 100,
+  },
+  centeredView: {
+    flex: 1,
+    position: 'relative',
+    marginTop: 22,
+    backgroundColor: '#212329',
   },
   text: {
     color: 'grey',

@@ -44,6 +44,17 @@ export const getAnote = async (req: Request, res: Response) => {
 
 export const editNote = async (req: Request, res: Response) => {
   const note = req.body;
-  console.log({note, req});
-  return res.status(200).send('hufn');
+  // console.log(note, 'help');
+
+  try {
+    const updated = await Note.update(
+      {title: note?.title, category: note?.category, note: note.note},
+      {where: {id: note.id}},
+    );
+    console.log({updated});
+    return res.status(200).send('ok');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error updating note');
+  }
 };
